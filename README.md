@@ -9,43 +9,76 @@ This project focuses on assessing flood risks in Montería, Colombia, with a spe
 - **[IDEAM](http://dhime.ideam.gov.co/atencionciudadano/):** 
   IDEAM stands for the Institute of Hydrology, Meteorology, and Environmental Studies (Instituto de Hidrología, Meteorología y Estudios Ambientales). It provides hydrology, meteorology, and environmental data.
 
-## Data Flow Diagram
-
-The following diagram illustrates the data flow for the Montería, Colombia Flood Assessment project:
 
 ## Data Flow Diagram
 
-The following diagram illustrates the data flow for the Montería, Colombia Flood Assessment project:
+The following diagram illustrates the parameters preparation:
 
 ```mermaid
 graph TB
-    A[Colombia gov geo-data platform] --> B[Fill DEM]
+    A[Colombia government geo-data platform] -->|SRTM 30 Meters DEM| B[Fill DEM]
     B --> C[Flow Direction]
     B --> D[Flow Accumulation]
-    C --> E[Flow Direction Calc]
-    D --> F[Flow Accumulation Calc]
-    F --> G[Stream Distance Calc]
-    B --> H[Filled DEM]
-    H --> I[Slope Calculation]
-    I --> J[Slope]
-    J --> K[TWI Calculation]
+    C --> E[Use arcpy.sa.FlowDirection() to output Flow Direction]
+    D --> F[Use arcpy.sa.FlowAccumulation() to output Flow Accumulation]
+    F --> G[Distance from Stream]
+    G --> H[Use arcpy.sa.EucDistance() to calculate distance]
+    B --> I[Filled DEM (Elevation)]
+    I --> J[Use arcpy.sa.Slope() to output Slope (degrees)]
+    J --> K[Slope]
+    K --> L[TWI]
+    L --> M[Calculate TWI]
     
-    A --> L[LULC - 2018 Land Cover]
-    L --> M[Reclassify 1 to 5]
+    A -->|2018 Land cover map (1:100,000)| N[LULC]
+    N --> O[Reclassify rank 1 to 5]
 
-    A --> N[Soil - 2008 Map]
-    N --> O[Reclassify 1 to 5]
+    A -->|2008 Soil Characteristics Map, Córdoba (1:100,000)| P[Soil]
+    P --> Q[Reclassify rank 1 to 5]
     
-    A --> P[Precipitation - 2013-2023]
-    P --> Q[Calc Average Value]
-    Q --> R[Station Points with Precipitation]
-    R --> S[IDW Interpolation]
+    A -->|2013-2023 Annual Precipitation| R[Precipitation]
+    R --> S[Calculate average value]
+    S --> T[Station points with annual precipitation value]
+    T --> U[IDW]
 
-    A --> T[Population - 2018 Data]
-    T --> U[Convert to Raster]
-    U --> V[Reclassify 1 to 5]
+    A -->|2018 distribution of population| V[Population]
+    V --> W[polygon to raster]
+    W --> X[Reclassify rank 1 to 5]
 
-    W[Google Earth Engine] --> X[NDVI - LANDSAT Data]
+    Z[Google Earth Engine] -->|LANDSAT L08 C01 T1 8DAY NDVI| AA[NDVI]
+```
+The following diagram illustrates the  MCDA process:
+
+```mermaid
+graph TB
+    A[Colombia government geo-data platform] -->|SRTM 30 Meters DEM| B[Fill DEM]
+    B --> C[Flow Direction]
+    B --> D[Flow Accumulation]
+    C --> E[Use arcpy.sa.FlowDirection() to output Flow Direction]
+    D --> F[Use arcpy.sa.FlowAccumulation() to output Flow Accumulation]
+    F --> G[Distance from Stream]
+    G --> H[Use arcpy.sa.EucDistance() to calculate distance]
+    B --> I[Filled DEM (Elevation)]
+    I --> J[Use arcpy.sa.Slope() to output Slope (degrees)]
+    J --> K[Slope]
+    K --> L[TWI]
+    L --> M[Calculate TWI]
+    
+    A -->|2018 Land cover map (1:100,000)| N[LULC]
+    N --> O[Reclassify rank 1 to 5]
+
+    A -->|2008 Soil Characteristics Map, Córdoba (1:100,000)| P[Soil]
+    P --> Q[Reclassify rank 1 to 5]
+    
+    A -->|2013-2023 Annual Precipitation| R[Precipitation]
+    R --> S[Calculate average value]
+    S --> T[Station points with annual precipitation value]
+    T --> U[IDW]
+
+    A -->|2018 distribution of population| V[Population]
+    V --> W[polygon to raster]
+    W --> X[Reclassify rank 1 to 5]
+
+    Z[Google Earth Engine] -->|LANDSAT L08 C01 T1 8DAY NDVI| AA[NDVI]
 ```
 ## Methodology
 A combination of various MCDM methods was used to ensure a comprehensive evaluation of high-risk areas:
