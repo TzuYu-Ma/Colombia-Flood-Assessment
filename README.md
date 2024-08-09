@@ -19,7 +19,7 @@ The following diagram illustrates the parameters preparation:
 The following diagram illustrates the MCDA process:
 ```mermaid
 graph TD
-    subgraph Factors
+    subgraph Parameters
         A[Distance from Stream]
         B[Elevation]
         C[Slope]
