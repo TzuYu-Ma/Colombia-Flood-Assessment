@@ -23,16 +23,16 @@ graph TB
     D --> F[Use arcpy.sa.FlowAccumulation to output Flow Accumulation]
     F --> G[Distance from Stream]
     G --> H[Use arcpy.sa.EucDistance to calculate distance]
-    B --> I[Filled DEM (Elevation)]
-    I --> J[Use arcpy.sa.Slope to output Slope (degrees)]
+    B --> I[Elevation]
+    I --> J[Use arcpy.sa.Slope to output Slope]
     J --> K[Slope]
     K --> L[TWI]
     L --> M[Calculate TWI]
     
-    A -->|2018 Land cover map (1:100,000)| N[LULC]
+    A -->|2018 Land cover map| N[LULC]
     N --> O[Reclassify rank 1 to 5]
 
-    A -->|2008 Soil Characteristics Map, Córdoba (1:100,000)| P[Soil]
+    A -->|2008 Soil Characteristics Map, Córdoba| P[Soil]
     P --> Q[Reclassify rank 1 to 5]
     
     A -->|2013-2023 Annual Precipitation| R[Precipitation]
