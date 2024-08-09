@@ -1,29 +1,33 @@
+## Data Flow Diagram
+
+The following diagram illustrates the data flow for the Montería, Colombia Flood Assessment project:
+
 ```mermaid
 graph TB
-    A[Colombia government geo-data platform] --> B[Fill DEM]
+    A[Colombia gov geo-data platform] --> B[Fill DEM]
     B --> C[Flow Direction]
     B --> D[Flow Accumulation]
-    C --> E[Flow Direction Calculation]
-    D --> F[Flow Accumulation Calculation]
-    F --> G[Distance from Stream Calculation]
-    B --> H[Filled DEM (Elevation)]
+    C --> E[Flow Direction Calc]
+    D --> F[Flow Accumulation Calc]
+    F --> G[Stream Distance Calc]
+    B --> H[Filled DEM]
     H --> I[Slope Calculation]
     I --> J[Slope]
     J --> K[TWI Calculation]
     
-    A --> L[LULC - 2018 Land Cover Map]
-    L --> M[Reclassify rank 1 to 5]
+    A --> L[LULC - 2018 Land Cover]
+    L --> M[Reclassify 1 to 5]
 
-    A --> N[Soil - 2008 Soil Characteristics Map]
-    N --> O[Reclassify rank 1 to 5]
+    A --> N[Soil - 2008 Map]
+    N --> O[Reclassify 1 to 5]
     
-    A --> P[Precipitation - 2013-2023 Annual Data]
-    P --> Q[Calculate Average Value]
-    Q --> R[Station Points with Annual Precipitation]
+    A --> P[Precipitation - 2013-2023]
+    P --> Q[Calc Average Value]
+    Q --> R[Station Points with Precipitation]
     R --> S[IDW Interpolation]
 
-    A --> T[Population - 2018 Distribution]
+    A --> T[Population - 2018 Data]
     T --> U[Convert to Raster]
-    U --> V[Reclassify rank 1 to 5]
+    U --> V[Reclassify 1 to 5]
 
-    W[Google Earth Engine] --> X[NDVI - LANDSAT L08 C01 T1 8DAY]
+    W[Google Earth Engine] --> X[NDVI - LANDSAT Data]
