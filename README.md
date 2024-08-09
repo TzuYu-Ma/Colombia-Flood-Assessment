@@ -14,42 +14,48 @@ This project focuses on assessing flood risks in Montería, Colombia, with a spe
 
 The following diagram illustrates the parameters preparation:
 
+![Data Flow Diagram](./images/parameters.jpg)
+
+The following diagram illustrates the MCDA process:
 ```mermaid
-graph TB
-    A[Colombia government geo-data platform] -->|SRTM 30 Meters DEM| B[Fill DEM]
-    B --> C[Flow Direction]
-    B --> D[Flow Accumulation]
-    C --> E[Use arcpy.sa.FlowDirection to output Flow Direction]
-    D --> F[Use arcpy.sa.FlowAccumulation to output Flow Accumulation]
-    F --> G[Distance from Stream]
-    G --> H[Use arcpy.sa.EucDistance to calculate distance]
-    B --> I[Elevation]
-    I --> J[Use arcpy.sa.Slope to output Slope]
-    J --> K[Slope]
-    K --> L[TWI]
-    L --> M[Calculate TWI]
-    
-    A -->|2018 Land cover map| N[LULC]
-    N --> O[Reclassify rank 1 to 5]
+graph TD
+    subgraph Factors
+        A[Distance from Stream]
+        B[Elevation]
+        C[Slope]
+        D[Soil]
+        E[LULC]
+        F[TWI]
+        G[NDVI]
+        H[Precipitation]
+        I[Population]
+    end
 
-    A -->|2008 Soil Characteristics Map, Córdoba| P[Soil]
-    P --> Q[Reclassify rank 1 to 5]
-    
-    A -->|2013-2023 Annual Precipitation| R[Precipitation]
-    R --> S[Calculate average value]
-    S --> T[Station points with annual precipitation value]
-    T --> U[IDW]
+    A --> J[AHP decide the Weight]
+    B --> J
+    C --> J
+    D --> J
+    E --> J
+    F --> J
+    G --> J
+    H --> J
+    I --> J
 
-    A -->|2018 distribution of population| V[Population]
-    V --> W[polygon to raster]
-    W --> X[Reclassify rank 1 to 5]
+    J --> K[TOPSIS calculation]
+    J --> L[VIKOR calculation]
+    J --> M[EDAS calculation]
+    J --> N[AHP result]
 
-    Z[Google Earth Engine] -->|LANDSAT L08 C01 T1 8DAY NDVI| AA[NDVI]
+    K --> O[TOPSIS result]
+    L --> P[VIKOR result]
+    M --> Q[EDAS result]
 
+    O --> R[Standardize]
+    P --> R
+    Q --> R
+
+    R --> S[Final result]
 ```
-The following diagram illustrates the  MCDA process:
-
-
 ## Methodology
 A combination of various MCDM methods was used to ensure a comprehensive evaluation of high-risk areas:
 
