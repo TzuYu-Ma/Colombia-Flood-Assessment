@@ -15,36 +15,34 @@ The following diagram illustrates the data flow for the Montería, Colombia Floo
 
 ```mermaid
 graph TB
-    A[Colombia government geo-data platform] -->|SRTM 30 Meters DEM| B[Fill DEM]
+    A[Colombia government geo-data platform] --> B[Fill DEM]
     B --> C[Flow Direction]
     B --> D[Flow Accumulation]
     C --> E[Output Flow Direction]
     D --> F[Output Flow Accumulation]
     F --> G[Distance from Stream]
-    G --> H[Calculate distance]
+    G --> H[Calculate Distance]
     B --> I[Filled DEM (Elevation)]
     I --> J[Output Slope (degrees)]
     J --> K[Slope]
-    K --> L[TWI]
-    L --> M[Calculate TWI]
+    K --> L[Calculate TWI]
     
-    A -->|2018 Land cover map (1:100,000)| N[LULC]
+    A --> N[LULC - 2018 Land Cover Map (1:100,000)]
     N --> O[Reclassify rank 1 to 5]
 
-    A -->|2008 Soil Characteristics Map, Córdoba (1:100,000)| P[Soil]
+    A --> P[Soil - 2008 Soil Characteristics Map (1:100,000)]
     P --> Q[Reclassify rank 1 to 5]
     
-    A -->|2013-2023 Annual Precipitation| R[Precipitation]
-    R --> S[Calculate average value]
-    S --> T[Station points with annual precipitation value]
-    T --> U[IDW]
+    A --> R[Precipitation - 2013-2023 Annual Precipitation]
+    R --> S[Calculate Average Value]
+    S --> T[Station Points with Annual Precipitation Value]
+    T --> U[IDW Interpolation]
 
-    A -->|2018 distribution of population| V[Population]
-    V --> W[Polygon to raster]
+    A --> V[Population - 2018 Distribution of Population]
+    V --> W[Polygon to Raster]
     W --> X[Reclassify rank 1 to 5]
 
-    Z[Google Earth Engine] -->|LANDSAT L08 C01 T1 8DAY NDVI| AA[NDVI]
-
+    Z[Google Earth Engine] --> AA[NDVI - LANDSAT L08 C01 T1 8DAY NDVI]
 
 
 ## Methodology
